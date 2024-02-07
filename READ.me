@@ -11,4 +11,42 @@ the purpose of kubernetes is to help host container in a fashionable way to esso
 kubernetes cluster coniste of a set of nodes, worker node host application as containers and control nodes manages plan schedule monitor nodes
 - ETCD cluster is a key value store that store information about container, a k
 - Kube-Scheduler is responsible of placing contanr based of their resource requirement, worker node capacities, such as taint node affinity
+- Controller manager, Node controller responsible on onbaording. new node, take cares of nodes handlinf situation when node destroy, and the replication-controller responsible 
+of the number of replica should be.
+
+HOW DO THEY COMUNICATE WITH EACH OTHER
+
+- KUBE-API responsible of orchestrating the cluster, monitor state of cluster server expose kubernetes api, nad worker nodes to server
+
+we need a container sofware like docker to host container, 
+
+on eaxh worker nodes
+Kubelet, agent is server that runs on each node in the cluster , it listens to the kube api server, deploy or destrouy container, kube-api periodically moniutor
+the status on kubelet server of nodes and container on them
+
+KUbe-Proxy ensure that nessary rules are in place in contaimner to allow communitaion between container
+
+
+
+----------------------------------------------------
+----------------------------------------------------
+ETCD
+ its reliable key value store and fast and secure runs on port 2379, it sotre information about the cluster , such as Nodes, PODS configs secrets accounts roles binding and others, any cahnge made 
+ to a cluster is updated into the etcd server only when the changed has been unpdated in etcd server it is considereed as complete, the etcd server runs on pod in the 
+ namespace kube-system 
+ kuubectl exec etcd-master -n kube-system , run commsnd ectdctl get / --prefix -keys-only
+ ectdctl sanpshot save
+ ectdctl endpoint health 
+ ectdctl get
+ ectdctl put
+================================================
+KUBE-API
+ any extrenal commande gets valodated by api-server 
+ 1. authenitacte server
+ 2. validate request
+ 3. retreive data 
+ 4. uodate etcd 
+ 5. scheduker listen to kube api see pod was created and choose to node place pod
+ 6. updte kube-api communocate to kubelet , and order container runtime to craeted image on pod
+ 7. update back ectd server with all information
 
